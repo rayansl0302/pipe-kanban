@@ -176,6 +176,19 @@ export class CardsDetalhesComponent implements OnInit, OnDestroy {
       }
     }
   }
+  excluirCard(): void {
+    const confirmacao = confirm('Tem certeza que deseja excluir este card?');
+    if (confirmacao) {
+      this.cardService.excluirCard(this.card.id)
+        .subscribe(
+          () => {
+            console.log('Card excluído com sucesso.');
+            this.dialogRef.close();
+          },
+          error => console.error('Erro ao excluir card:', error)
+        );
+    }
+  }
 
   private atualizarCard(): void {
     this.cardService.getCardsByQuadroId(this.card.quadroId).subscribe(cards => {

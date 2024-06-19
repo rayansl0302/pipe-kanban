@@ -1,9 +1,15 @@
-<div class="card-header trello-card-header">
+<div class="card-header trello-card-header d-flex justify-content-between">
     <h5 class="card-title trello-card-title">
         <mat-icon class="icon" aria-hidden="false" aria-label="Detalhes do Card">{{ card.titulo }}</mat-icon>
         Detalhes do Card: {{ card.titulo }}
     </h5>
+    <span>Excluir Card
+        <button mat-icon-button (click)="excluirCard()">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </span>
 </div>
+
 <div class="card trello-card">
 
     <div class="card-body w-100 trello-card-content">

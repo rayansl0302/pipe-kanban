@@ -74,8 +74,8 @@ export class CardsService {
   }
 
   // Delete
-  deletarCard(id: string): Observable<void> {
-    return new Observable(observer => {
+  excluirCard(id: string): Observable<void> {
+    return new Observable<void>(observer => {
       this.cardsCollection.doc(id).delete()
         .then(() => {
           observer.next();
@@ -247,6 +247,6 @@ export class CardsService {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-  
+
 }
 
