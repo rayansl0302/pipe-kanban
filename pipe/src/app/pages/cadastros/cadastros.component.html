@@ -1,0 +1,99 @@
+<app-header></app-header>
+
+<div class="container">
+    <mat-tab-group>
+        <!-- Tab para Área de Trabalho -->
+        <mat-tab label="Criar Área de Trabalho">
+            <ng-template matTabContent>
+                <!-- Formulário para Área de Trabalho -->
+                <form [formGroup]="areaDeTrabalhoForm" (ngSubmit)="salvarAreaDeTrabalho()">
+                    <mat-form-field>
+                        <input matInput formControlName="titulo" placeholder="Título da Área de Trabalho">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <textarea matInput formControlName="descricao"
+                            placeholder="Descrição da Área de Trabalho"></textarea>
+                    </mat-form-field>
+                    <button mat-raised-button type="submit" color="primary">Salvar</button>
+                </form>
+            </ng-template>
+        </mat-tab>
+
+        <!-- Tab para Quadros -->
+        <mat-tab label="Criar Quadros">
+            <ng-template matTabContent>
+                <!-- Formulário para Quadros -->
+                <form [formGroup]="quadroForm" (ngSubmit)="salvarQuadro()">
+                    <mat-form-field>
+                        <input matInput formControlName="titulo" placeholder="Título do Quadro">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <textarea matInput formControlName="descricao" placeholder="Descrição do Quadro"></textarea>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-select formControlName="areaDeTrabalhoId" placeholder="Selecione a Área de Trabalho">
+                            <mat-option *ngFor="let areaDeTrabalho of areasDeTrabalhoOptions"
+                                [value]="areaDeTrabalho.id">
+                                {{ areaDeTrabalho.titulo }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button mat-raised-button type="submit" color="primary">Salvar</button>
+                </form>
+            </ng-template>
+        </mat-tab>
+
+        <!-- Tab para Cards -->
+        <mat-tab label="Criar Cards">
+            <ng-template matTabContent>
+                <!-- Formulário para Cards -->
+                <form [formGroup]="cardForm" (ngSubmit)="salvarCard()">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field>
+                                <input matInput formControlName="titulo" placeholder="Título do Card">
+                            </mat-form-field>
+                            <mat-form-field>
+                                <input matInput formControlName="autor" placeholder="Autor">
+                            </mat-form-field>
+                            <mat-form-field>
+                                <input matInput formControlName="atribuido" placeholder="Atribuído">
+                            </mat-form-field>
+                            <mat-form-field>
+                                <input matInput formControlName="imgUrl" placeholder="URL da Imagem">
+                            </mat-form-field>
+
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field>
+                                <input matInput formControlName="dataCriacao" placeholder="Data de Criação">
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-select formControlName="quadroId" placeholder="Selecione o Quadro">
+                                    <mat-option *ngFor="let quadro of quadrosOptions" [value]="quadro.id">
+                                        {{ quadro.titulo }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-select formControlName="status" placeholder="Selecione o Status">
+                                    <mat-option *ngFor="let status of statusOptions" [value]="status">
+                                        {{ status }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <mat-form-field class="w-100">
+                            <textarea matInput formControlName="descricao" placeholder="Descrição do Card"></textarea>
+                        </mat-form-field>
+                    </div>
+                    <button mat-raised-button type="submit" color="primary">Salvar</button>
+                </form>
+            </ng-template>
+        </mat-tab>
+
+
+    </mat-tab-group>
+</div>

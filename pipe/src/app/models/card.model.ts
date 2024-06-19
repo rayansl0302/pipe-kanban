@@ -1,3 +1,4 @@
+import { ChecklistItem } from "./checklist.model";
 import { Comentarios } from "./comentarios.model";
 
 export interface Card{
@@ -6,8 +7,11 @@ export interface Card{
     atribuido:string;
     titulo: string;
     descricao:string;
-    checklist:string;
+    checklist: ChecklistItem[];
     dataCriacao:Date;
+    status:string;
     imgUrl:string;
-    comentarios:Comentarios;
+    comentarios:Comentarios[];
+    quadroId: string;
+
 }

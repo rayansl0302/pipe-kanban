@@ -1,7 +1,10 @@
 import { Card } from "./card.model";
 import { Quadro } from "./quadro.model";
 
-export interface AreaDeTrabalho{
-    quadros:Quadro;
-    cards:Card;
-}
+export interface AreaDeTrabalho {
+    id: string;
+    titulo: string;
+    descricao: string;
+    quadros: Quadro[];
+  }
+  

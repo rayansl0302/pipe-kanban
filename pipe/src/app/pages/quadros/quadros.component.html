@@ -1,1 +1,33 @@
-<p>quadros works!</p>
+<app-header></app-header>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="quadros">
+        <div *ngIf="quadro">
+          <h1>{{ quadro.titulo }}</h1>
+          <div class="quadros-content">
+            <!-- Colunas dos quadros -->
+            <div *ngFor="let coluna of colunas" class="column" [id]="coluna.id" cdkDropList
+              [cdkDropListData]="getCardsByStatus(coluna.status)" [cdkDropListConnectedTo]="getColunaIds()"
+              (cdkDropListDropped)="onDrop($event, coluna.status)">
+              <h2>{{ coluna.nome }}</h2>
+              <mat-card class="quadro-card" *ngFor="let card of getCardsByStatus(coluna.status)" cdkDrag>
+                <mat-card-header>
+                  <mat-card-title>{{ card.titulo }}</mat-card-title>
+                  <mat-card-subtitle>{{ card.descricao }}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-actions>
+                  <button mat-button (click)="openDialog(card)">Ver Card</button>
+                </mat-card-actions>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!cards || cards.length === 0">
+          <p>Quadro não encontrado ou sem cards</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

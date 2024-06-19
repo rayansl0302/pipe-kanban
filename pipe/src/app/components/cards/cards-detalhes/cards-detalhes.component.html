@@ -1,0 +1,120 @@
+<div class="card-header trello-card-header">
+    <h5 class="card-title trello-card-title">
+        <mat-icon class="icon" aria-hidden="false" aria-label="Detalhes do Card">{{ card.titulo }}</mat-icon>
+        Detalhes do Card: {{ card.titulo }}
+    </h5>
+</div>
+<div class="card trello-card">
+
+    <div class="card-body w-100 trello-card-content">
+        <div class="row w-100">
+            <div class="col-md-6 trello-left-column">
+                <!-- Detalhes do Card -->
+                <div class="trello-section">
+                    <h3 class="trello-section-title">
+                        <mat-icon class="section-icon" aria-hidden="false" aria-label="Título">title</mat-icon> Título
+                    </h3>
+                    <p>{{ card.titulo }}</p>
+                </div>
+                <div class="trello-section">
+                    <h3 class="trello-section-title">
+                        <mat-icon class="section-icon" aria-hidden="false" aria-label="Autor">person</mat-icon> Autor
+                    </h3>
+                    <p>{{ card.autor }}</p>
+                </div>
+                <div class="trello-section">
+                    <h3 class="trello-section-title">
+                        <mat-icon class="section-icon" aria-hidden="false" aria-label="Descrição">description</mat-icon>
+                        Descrição
+                    </h3>
+                    <p>{{ card.descricao }}</p>
+                </div>
+                <div class="trello-section">
+                    <h3 class="trello-section-title">
+                        <mat-icon class="section-icon" aria-hidden="false"
+                            aria-label="Lista de imagens">image</mat-icon>
+                        Lista de imagens
+                    </h3>
+                    <mat-list>
+                        <mat-list-item>
+                            <div class="d-flex"> <mat-icon mat-list-icon>image</mat-icon>
+                                <p mat-line>{{ card.imgUrl }}</p>
+                            </div>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+
+
+            </div>
+            <div class="col-md-6 trello-right-column">
+                <!-- Checklist -->
+                <div *ngIf="card.checklist && card.checklist.length > 0" class="trello-section">
+                    <h3 class="trello-section-title">
+                        <mat-icon class="section-icon" aria-hidden="false"
+                            aria-label="Checklist">check_circle</mat-icon>
+                        Checklist
+                    </h3>
+                    <div class="trello-checklist" [formGroup]="checklistForm">
+                        <div class="checklist-item-box" *ngFor="let check of card.checklist; let i = index">
+                            <div [formGroupName]="'checklistItem' + i">
+                                <div class="form-check">
+                                    <span class="esquerda"><mat-checkbox formControlName="checked"
+                                            (change)="salvarChecklist()"></mat-checkbox>
+                                        <label>{{ check.item }}</label></span>
+                                    <!-- Ícones de editar e excluir -->
+                                    <span class="direita">
+                                        <mat-icon class="edit-icon cup" (click)="editarItem(i)">edit</mat-icon>
+                                        <mat-icon class="delete-icon cup" (click)="excluirItem(i)">delete</mat-icon>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <span *ngIf="!card.checklist || card.checklist.length === 0">Nenhum item no checklist</span>
+
+
+
+                <!-- Comentários -->
+                <div *ngIf="card.comentarios && card.comentarios.length > 0" class="trello-section">
+                    <h3 class="trello-section-title">
+                        <mat-icon class="section-icon" aria-hidden="false" aria-label="Comentários">comment</mat-icon>
+                        Comentários
+                    </h3>
+                    <div class="comment-box" *ngFor="let comentario of card.comentarios">
+                        <div class="d-flex justify-content-between">
+                            <p><strong>{{ comentario.autor }}:</strong> {{ comentario.comentario }}</p>
+                            <span class="comment-actions">
+                                <mat-icon class="edit-icon" (click)="editarComentario(comentario)">edit</mat-icon>
+                                <mat-icon class="delete-icon" (click)="excluirComentario(comentario)">delete</mat-icon>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="!card.comentarios || card.comentarios.length === 0" class="trello-section">
+                    <h3 class="trello-section-title">
+                        <mat-icon class="section-icon" aria-hidden="false" aria-label="Comentários">comment</mat-icon>
+                        Comentários
+                    </h3>
+                    <span>Nenhum comentário encontrado.</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="card-footer trello-card-actions">
+    <button mat-button color="primary" (click)="adicionarChecklist()">
+        <mat-icon class="icon" aria-hidden="false" aria-label="Adicionar Checklist">playlist_add_check</mat-icon>
+        Adicionar Checklist
+    </button>
+    <button mat-button color="primary" (click)="adicionarComentario()">
+        <mat-icon class="icon" aria-hidden="false" aria-label="Adicionar Comentário">comment</mat-icon>
+        Adicionar Comentário
+    </button>
+    <button mat-button color="warn" (click)="fechar()">
+        <mat-icon class="icon" aria-hidden="false" aria-label="Fechar">close</mat-icon>
+        Fechar
+    </button>
+</div>
