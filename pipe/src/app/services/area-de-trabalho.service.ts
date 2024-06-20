@@ -29,7 +29,7 @@ export class AreaDeTrabalhoService {
   }
 
   // Read
-  getAreasDeTrabalho(): Observable<AreaDeTrabalho[]> {
+  getAreasDeTrabalho(accessLevel: string): Observable<AreaDeTrabalho[]> {
     return this.areasDeTrabalhoCollection.valueChanges({ idField: 'id' }).pipe(
       catchError(error => {
         console.error('Error getting areas de trabalho:', error);
@@ -37,7 +37,6 @@ export class AreaDeTrabalhoService {
       })
     );
   }
-
   // Update
   atualizarAreaDeTrabalho(id: string, areaDeTrabalho: AreaDeTrabalho): Promise<void> {
     return this.areasDeTrabalhoCollection.doc(id).update(areaDeTrabalho);

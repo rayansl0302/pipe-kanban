@@ -1,0 +1,32 @@
+<div class="create-user-container">
+    <h2>Criar Novo Usuário</h2>
+    <form [formGroup]="createUserForm" (ngSubmit)="onSubmit()">
+      <div>
+        <label for="email">Email:</label>
+        <input id="email" formControlName="email" type="email">
+      </div>
+      <div>
+        <label for="password">Senha:</label>
+        <input id="password" formControlName="password" type="password">
+      </div>
+      <div>
+        <label for="accessLevel">Nível de Permissão:</label>
+        <select id="accessLevel" formControlName="accessLevel">
+          <option value="user">Usuário</option>
+          <option value="editor">Editor</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <div>
+        <label for="workspace">Área de Trabalho:</label>
+        <select id="workspace" formControlName="workspace">
+          <!-- Adicione as opções de área de trabalho -->
+          <option value="workspace1">Workspace 1</option>
+          <option value="workspace2">Workspace 2</option>
+        </select>
+      </div>
+      <button type="submit">Criar Usuário</button>
+    </form>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  </div>
+  

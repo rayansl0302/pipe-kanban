@@ -1,0 +1,59 @@
+// src/app/components/login/login.component.less
+.login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+  
+    form {
+      display: flex;
+      flex-direction: column;
+  
+      div {
+        margin-bottom: 15px;
+  
+        label {
+          display: block;
+          margin-bottom: 5px;
+        }
+  
+        input {
+          width: 100%;
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+        }
+  
+        small {
+          color: #d9534f;
+        }
+      }
+  
+      .error-message {
+        margin-bottom: 15px;
+        color: #d9534f;
+      }
+  
+      button {
+        padding: 10px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+  
+        &:disabled {
+          background-color: #b5d1f8;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+  

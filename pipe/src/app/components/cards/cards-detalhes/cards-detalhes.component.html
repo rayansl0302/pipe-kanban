@@ -3,11 +3,11 @@
         <mat-icon class="icon" aria-hidden="false" aria-label="Detalhes do Card">{{ card.titulo }}</mat-icon>
         Detalhes do Card: {{ card.titulo }}
     </h5>
-    <span>Excluir Card
-        <button mat-icon-button (click)="excluirCard()">
-            <mat-icon>delete</mat-icon>
-        </button>
-    </span>
+
+    <button mat-button (click)="fechar()">
+        <mat-icon class="icon" style=" filter: invert(1);" aria-hidden="false" aria-label="Fechar">close</mat-icon>
+        <p style="color:#fff; margin: 0;">Fechar</p>
+    </button>
 </div>
 
 <div class="card trello-card">
@@ -92,7 +92,8 @@
                             <p><strong>{{ comentario.autor }}:</strong> {{ comentario.comentario }}</p>
                             <span class="comment-actions">
                                 <mat-icon class="edit-icon cup" (click)="editarComentario(comentario)">edit</mat-icon>
-                                <mat-icon class="delete-icon cup" (click)="excluirComentario(comentario)">delete</mat-icon>
+                                <mat-icon class="delete-icon cup"
+                                    (click)="excluirComentario(comentario)">delete</mat-icon>
                             </span>
                         </div>
                     </div>
@@ -119,8 +120,10 @@
         <mat-icon class="icon" aria-hidden="false" aria-label="Adicionar Comentário">comment</mat-icon>
         Adicionar Comentário
     </button>
-    <button mat-button color="warn" (click)="fechar()">
-        <mat-icon class="icon" aria-hidden="false" aria-label="Fechar">close</mat-icon>
-        Fechar
-    </button>
+    <span class="cup">
+        Excluir Card
+        <button mat-icon-button (click)="excluirCard()">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </span>
 </div>

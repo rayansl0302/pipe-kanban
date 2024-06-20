@@ -35,6 +35,11 @@ import { QuadroColunaComponent } from './pages/quadros/quadro-coluna/quadro-colu
 import { MatListModule } from '@angular/material/list';
 
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AuthService } from './services/auth.service';
+import { AuthGuard } from './services/authGuard';
+import { CreateUserComponent } from './components/create-user/create-user.component';
+import { AdminGuard } from './services/adminGuard';
 
 
 @NgModule({
@@ -51,7 +56,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     QuadrosInternosComponent,
     CadastrosComponent,
     QuadroColunaComponent,
-    FilterByStatusPipe
+    FilterByStatusPipe,
+    CreateUserComponent
   ],
   imports: [
     BrowserModule,
@@ -70,9 +76,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     DragDropModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     MatCheckboxModule,
-    MatListModule
+    MatListModule,
+    AngularFireAuthModule
+
   ],
-  providers: [],
+  providers: [AuthService, AuthGuard, AdminGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

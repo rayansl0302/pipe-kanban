@@ -8,6 +8,7 @@ import { QuadrosService } from 'src/app/services/quadros.service';
 import { CardsService } from 'src/app/services/cards.service';
 import { ChecklistService } from 'src/app/services/checklist.service';
 import { ChecklistItem } from 'src/app/models/checklist.model';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-cadastros',
@@ -22,12 +23,14 @@ export class CadastrosComponent implements OnInit {
   quadrosOptions: Quadro[] = [];
   statusOptions: string[] = ['A fazer', 'Em andamento', 'Em revisão', 'Concluído'];
   checklists: ChecklistItem[] = [];
+  areasDeTrabalho: AreaDeTrabalho[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private areaDeTrabalhoService: AreaDeTrabalhoService,
     private quadroService: QuadrosService,
     private cardService: CardsService,
+    private authService: AuthService,
     private checklistService: ChecklistService
   ) { }
 
@@ -58,6 +61,13 @@ export class CadastrosComponent implements OnInit {
 
     this.carregarAreasDeTrabalho();
     this.carregarQuadros();
+    this.authService.isLoggedIn().subscribe(loggedIn => {
+      if (loggedIn) {
+        this.carregarAreasDeTrabalho();
+      } else {
+        console.error('Usuário não está logado.');
+      }
+    });
   }
 
   addChecklistItem() {
@@ -88,12 +98,12 @@ export class CadastrosComponent implements OnInit {
     checklistsArray.removeAt(index);
   }
 
-  carregarAreasDeTrabalho() {
-    this.areaDeTrabalhoService.getAreasDeTrabalho().subscribe(
-      (areas: AreaDeTrabalho[]) => {
-        this.areasDeTrabalhoOptions = areas;
+  carregarAreasDeTrabalho(): void {
+    this.areaDeTrabalhoService.getAreasDeTrabalho('').subscribe(
+      areas => {
+        this.areasDeTrabalho = areas;
       },
-      (error: any) => {
+      error => {
         console.error('Erro ao carregar áreas de trabalho:', error);
       }
     );
@@ -156,13 +166,13 @@ export class CadastrosComponent implements OnInit {
         checklist: [], // Incluir o campo checklist como um array vazio
         quadroId: cardData.quadroId // Adicione a propriedade quadroId
       };
-      
-  
+
+
       // Verificar se o campo checklist está definido no formulário
       if (cardData.checklist) {
         card.checklist = cardData.checklist; // Adicionar o checklist do formulário
       }
-  
+
       this.cardService.adicionarCard(card).subscribe(
         (response: any) => {
           console.log('Card salvo com sucesso:', response);
@@ -177,8 +187,7 @@ export class CadastrosComponent implements OnInit {
       console.error('O formulário de card não é válido.');
     }
   }
-  
-  
+
+
 
 }
-   

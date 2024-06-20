@@ -6,5 +6,6 @@ export interface AreaDeTrabalho {
     titulo: string;
     descricao: string;
     quadros: Quadro[];
+    accessLevel?: string;
   }
   
