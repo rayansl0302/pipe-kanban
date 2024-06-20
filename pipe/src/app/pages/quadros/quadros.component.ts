@@ -6,7 +6,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { QuadrosService } from 'src/app/services/quadros.service';
 import { CardsDetalhesComponent } from 'src/app/components/cards/cards-detalhes/cards-detalhes.component';
-import { catchError, concatMap, from, of } from 'rxjs';
+import { from } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-quadros',
@@ -36,7 +37,6 @@ export class QuadrosComponent implements OnInit {
         quadro => {
           if (quadro) {
             this.quadro = quadro;
-            // Carregar os cards do quadro
             this.carregarCardsDoQuadro(quadro.id);
           } else {
             console.error('Quadro não encontrado.');
@@ -48,10 +48,11 @@ export class QuadrosComponent implements OnInit {
       );
     }
   }
+
   getColunaIds(): string[] {
     return this.colunas.map(coluna => coluna.id);
   }
-  
+
   carregarCardsDoQuadro(quadroId: string): void {
     this.quadrosService.getCardsDoQuadro(quadroId).subscribe(
       cards => {
@@ -67,7 +68,7 @@ export class QuadrosComponent implements OnInit {
   openDialog(card: Card): void {
     const dialogRef = this.dialog.open(CardsDetalhesComponent, {
       width: '1200px',
-      data: { card: card } // Envolver o objeto card em um objeto com a propriedade card
+      data: { card: card }
     });
   
     dialogRef.afterClosed().subscribe(result => {
@@ -105,8 +106,12 @@ export class QuadrosComponent implements OnInit {
           event.currentIndex
         );
   
-        // Salvar a ordem dos cards
-        this.salvarOrdemDosCards();
+        // Salvar a ordem dos cards e o novo status do card
+        this.quadrosService.atualizarCard(card).subscribe(() => {
+          console.log(`Status do card ${card.id} atualizado com sucesso`);
+        }, error => {
+          console.error('Erro ao atualizar o status do card:', error);
+        });
       }
     }
   }
@@ -115,11 +120,9 @@ export class QuadrosComponent implements OnInit {
     if (this.quadro) {
       console.log('Salvando a nova ordem dos cards:', this.cards);
   
-      // Atualiza a ordem dos cards no quadro
       this.quadrosService.atualizarQuadro(this.quadro.id, { card: this.cards }).then(() => {
         console.log('Ordem dos cards atualizada com sucesso');
   
-        // Salva a ordem dos cards após a atualização do quadro
         from(this.quadrosService.salvarStatusDosCards(this.cards)).pipe(
           catchError(error => {
             console.error('Erro ao salvar a ordem dos cards:', error);
@@ -134,7 +137,6 @@ export class QuadrosComponent implements OnInit {
     }
   }
   
-  
   getCardsByStatus(status: string): Card[] {
     return this.cards.filter(card => card.status === status);
   }
@@ -144,7 +146,7 @@ export class QuadrosComponent implements OnInit {
       this.quadrosService.adicionarCardAQuadro(this.quadro.id, card).subscribe(
         () => {
           console.log('Card adicionado e quadro atualizado com sucesso');
-          this.cards.push(card); // Adiciona o card ao array local de cards
+          this.cards.push(card);
         },
         error => {
           console.error('Erro ao adicionar card:', error);

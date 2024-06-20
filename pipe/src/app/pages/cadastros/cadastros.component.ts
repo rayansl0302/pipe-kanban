@@ -116,6 +116,8 @@ export class CadastrosComponent implements OnInit {
       (ref: any) => {
         console.log('Área de trabalho salva com sucesso:', ref.id);
         this.carregarAreasDeTrabalho();
+        alert('Área de trabalho criada com sucesso.');
+
       },
       (error: any) => {
         console.error('Erro ao salvar área de trabalho:', error);
@@ -129,6 +131,8 @@ export class CadastrosComponent implements OnInit {
       (ref: any) => {
         console.log('Quadro salvo com sucesso:', ref.id);
         this.carregarQuadros();
+        alert('Quadro criado com sucesso.');
+
       },
       (error: any) => {
         console.error('Erro ao salvar quadro:', error);
@@ -162,6 +166,8 @@ export class CadastrosComponent implements OnInit {
       this.cardService.adicionarCard(card).subscribe(
         (response: any) => {
           console.log('Card salvo com sucesso:', response);
+          alert('Card criado com sucesso.');
+
         },
         (error: any) => {
           console.error('Erro ao salvar card:', error);

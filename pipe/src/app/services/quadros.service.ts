@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, combineLatest, of } from 'rxjs';
-import { map, catchError, switchMap } from 'rxjs/operators';
+import { Observable, from } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { Quadro } from '../models/quadro.model';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { Card } from '../models/card.model';
-import firebase from 'firebase/compat/app';  // Import Firebase compat package
-import { CardsService } from './cards.service'; // Import CardsService
+import { CardsService } from './cards.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +16,6 @@ export class QuadrosService {
     this.quadrosCollection = this.firestore.collection<Quadro>('quadros');
   }
 
-  // Create
   adicionarQuadro(quadro: Quadro): Observable<any> {
     return new Observable(observer => {
       this.quadrosCollection.add(quadro)
@@ -31,7 +29,6 @@ export class QuadrosService {
     });
   }
 
-  // Read
   getQuadros(): Observable<Quadro[]> {
     return this.quadrosCollection.valueChanges({ idField: 'id' }).pipe(
       catchError(error => {
@@ -59,30 +56,23 @@ export class QuadrosService {
     );
   }
   
-  // Update
   atualizarQuadro(id: string, quadro: Partial<Quadro>): Promise<void> {
     return this.quadrosCollection.doc(id).update(quadro);
   }
 
-  // Delete
   deletarQuadro(id: string): Promise<void> {
     return this.quadrosCollection.doc(id).delete();
   }
 
-
-  // Adicionar cartão ao quadro
   adicionarCardAQuadro(quadroId: string, card: Card): Observable<void> {
-    // Gerar um ID para o cartão
     const cardId = this.firestore.createId();
     card.id = cardId;
 
     return new Observable(observer => {
-      // Adicionar o cartão à coleção 'cards'
       this.firestore.collection<Card>('cards').doc(cardId).set(card)
         .then(() => {
-          // Atualizar o quadro com o ID do cartão
           return this.quadrosCollection.doc(quadroId).update({
-            cardId: cardId // Usar apenas o ID do cartão
+            cardId: cardId
           });
         })
         .then(() => {
@@ -94,7 +84,7 @@ export class QuadrosService {
         });
     });
   }
-  // Recuperar todos os cartões associados a um quadro
+
   getCardsDoQuadro(quadroId: string): Observable<Card[]> {
     return this.cardsService.getCardsByQuadroId(quadroId);
   }
@@ -116,5 +106,15 @@ export class QuadrosService {
         observer.error(error);
       });
     });
+  }
+
+  atualizarCard(card: Card): Observable<void> {
+    return from(this.firestore.collection('cards').doc(card.id).update({ status: card.status })).pipe(
+      map(() => void 0),
+      catchError(error => {
+        console.error('Erro ao atualizar o card:', error);
+        throw error;
+      })
+    );
   }
 }
