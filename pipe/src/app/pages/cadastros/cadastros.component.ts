@@ -60,6 +60,7 @@ export class CadastrosComponent implements OnInit {
     });
 
     this.carregarAreasDeTrabalho();
+    
     this.carregarQuadros();
     this.authService.isLoggedIn().subscribe(loggedIn => {
       if (loggedIn) {

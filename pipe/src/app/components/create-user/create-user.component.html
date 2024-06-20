@@ -1,32 +1,31 @@
+<app-header></app-header>
+
 <div class="create-user-container">
-    <h2>Criar Novo Usuário</h2>
-    <form [formGroup]="createUserForm" (ngSubmit)="onSubmit()">
-      <div>
-        <label for="email">Email:</label>
-        <input id="email" formControlName="email" type="email">
-      </div>
-      <div>
-        <label for="password">Senha:</label>
-        <input id="password" formControlName="password" type="password">
-      </div>
-      <div>
-        <label for="accessLevel">Nível de Permissão:</label>
-        <select id="accessLevel" formControlName="accessLevel">
-          <option value="user">Usuário</option>
-          <option value="editor">Editor</option>
-          <option value="admin">Admin</option>
-        </select>
-      </div>
-      <div>
-        <label for="workspace">Área de Trabalho:</label>
-        <select id="workspace" formControlName="workspace">
-          <!-- Adicione as opções de área de trabalho -->
-          <option value="workspace1">Workspace 1</option>
-          <option value="workspace2">Workspace 2</option>
-        </select>
-      </div>
-      <button type="submit">Criar Usuário</button>
-    </form>
-    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-  </div>
-  
+  <h2>Criar Novo Usuário</h2>
+  <form [formGroup]="createUserForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput id="email" formControlName="email" type="email">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Senha</mat-label>
+      <input matInput id="password" formControlName="password" type="password">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Nível de Permissão</mat-label>
+      <mat-select id="accessLevel" formControlName="accessLevel">
+        <mat-option value="level1">Level 1</mat-option>
+        <mat-option value="level2">Level 2</mat-option>
+        <mat-option value="level3">Level 3</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Área de Trabalho</mat-label>
+      <mat-select id="workspace" formControlName="workspace">
+        <mat-option *ngFor="let workspace of workspaces" [value]="workspace.id">{{ workspace.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">Criar Usuário</button>
+  </form>
+  <mat-error *ngIf="errorMessage" class="error-message">{{ errorMessage }}</mat-error>
+</div>

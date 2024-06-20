@@ -28,11 +28,13 @@ export class AreaDeTrabalhoService {
     });
   }
 
-  // Read
-  getAreasDeTrabalho(accessLevel: string): Observable<AreaDeTrabalho[]> {
-    return this.areasDeTrabalhoCollection.valueChanges({ idField: 'id' }).pipe(
+   // Carregar áreas de trabalho associadas ao usuário logado
+   getAreasDeTrabalho(userId: string): Observable<AreaDeTrabalho[]> {
+    return this.firestore.collection<AreaDeTrabalho>('areasDeTrabalho', ref =>
+      ref.where('userId', '==', userId) // Filtrar áreas de trabalho pelo ID do usuário
+    ).valueChanges({ idField: 'id' }).pipe(
       catchError(error => {
-        console.error('Error getting areas de trabalho:', error);
+        console.error('Erro ao obter áreas de trabalho:', error);
         throw error;
       })
     );

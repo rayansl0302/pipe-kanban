@@ -11,46 +11,50 @@ import { UserProfile } from '../models/user-profile.model';
 export class AuthService {
   constructor(private afAuth: AngularFireAuth, private firestore: AngularFirestore, private router: Router) { }
 
-  // Método para realizar login
   login(email: string, password: string): Promise<void> {
     return this.afAuth.signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         if (user) {
-          // Obtém o perfil do usuário para obter o nível de acesso
           this.getUserProfile(user.uid).subscribe((profile: UserProfile | undefined) => {
             if (profile) {
               console.log('UID do usuário:', user.uid);
               console.log('Nível de acesso:', profile.accessLevel);
+              
+              if (profile.accessLevel) {
+                localStorage.setItem('accessLevel', profile.accessLevel);
+              } else {
+                console.warn('Nível de acesso não definido.');
+                localStorage.removeItem('accessLevel'); // Remover a chave se o nível de acesso não estiver definido
+              }
+          
+              localStorage.setItem('uid', user.uid);
+              this.router.navigate(['/home']);
             } else {
               console.log('Perfil de usuário não encontrado.');
             }
-          });
+          });          
         } else {
           console.log('Usuário não encontrado.');
         }
-        this.router.navigate(['/home']);
       })
       .catch(error => {
         throw error;
       });
   }
-  
 
+  logout(): Promise<void> {
+    return this.afAuth.signOut().then(() => {
+      localStorage.removeItem('accessLevel');
+      localStorage.removeItem('uid');
+      this.router.navigate(['/login']);
+    });
+  }
 
   isLoggedIn(): Observable<boolean> {
     return this.afAuth.authState.pipe(
       map(user => !!user)
     );
-  }
-
-  logout(): Promise<void> {
-    return this.afAuth.signOut().then(() => {
-      // Limpa os dados do localStorage ao fazer logout
-      localStorage.removeItem('accessLevel');
-      localStorage.removeItem('uid');
-      this.router.navigate(['/login']);
-    });
   }
 
   registerUser(email: string, password: string, accessLevel: string, workspace: string): Promise<void> {
@@ -62,9 +66,8 @@ export class AuthService {
             email: email,
             accessLevel: accessLevel,
             workspace: workspace,
-            uid: user.uid // Usar o mesmo UID gerado pelo Firebase Authentication
+            uid: user.uid
           };
-          // Criar um documento na coleção 'users' do Firestore com o mesmo UID
           return this.firestore.collection('users').doc(user.uid).set(userData);
         } else {
           throw new Error('Erro ao criar UID do usuário.');
@@ -73,19 +76,6 @@ export class AuthService {
       .catch(error => {
         throw error;
       });
-  }
-  
-
-  // Captura o accessLevel e o salva no localStorage
-  private captureAccessLevel(uid: string | undefined): void {
-    if (uid) {
-      this.firestore.doc<UserProfile>(`users/${uid}`).valueChanges().subscribe(userProfile => {
-        if (userProfile && userProfile.accessLevel) {
-          localStorage.setItem('accessLevel', userProfile.accessLevel);
-          localStorage.setItem('uid', uid);
-        }
-      });
-    }
   }
 
   getUserProfile(uid: string): Observable<UserProfile | undefined> {

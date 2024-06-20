@@ -40,6 +40,7 @@ import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/authGuard';
 import { CreateUserComponent } from './components/create-user/create-user.component';
 import { AdminGuard } from './services/adminGuard';
+import { AreaDeTrabalhoService } from './services/area-de-trabalho.service';
 
 
 @NgModule({
@@ -80,7 +81,7 @@ import { AdminGuard } from './services/adminGuard';
     AngularFireAuthModule
 
   ],
-  providers: [AuthService, AuthGuard, AdminGuard],
+  providers: [AuthService, AuthGuard, AdminGuard,AreaDeTrabalhoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
