@@ -81,4 +81,13 @@ export class AuthService {
   getUserProfile(uid: string): Observable<UserProfile | undefined> {
     return this.firestore.doc<UserProfile>(`users/${uid}`).valueChanges();
   }
+  getCurrentUser(): Promise<firebase.default.User | null> { // Ajuste a importação do tipo User
+    return new Promise((resolve, reject) => {
+      this.afAuth.authState.subscribe(user => {
+        resolve(user); // Resolva a Promise com o usuário atualmente autenticado
+      }, error => {
+        reject(error); // Rejeite a Promise se houver algum erro
+      });
+    });
+  }
 }

@@ -13,6 +13,7 @@ export class AreaDeTrabalhoService {
   constructor(private firestore: AngularFirestore) {
     this.areasDeTrabalhoCollection = this.firestore.collection<AreaDeTrabalho>('areasDeTrabalho');
   }
+  
 
   // Create
   adicionarAreaDeTrabalho(areaDeTrabalho: AreaDeTrabalho): Observable<any> {
@@ -35,7 +36,7 @@ export class AreaDeTrabalhoService {
     ).valueChanges({ idField: 'id' }).pipe(
       catchError(error => {
         console.error('Erro ao obter áreas de trabalho:', error);
-        throw error;
+        throw error;  
       })
     );
   }
